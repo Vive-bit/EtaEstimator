@@ -9,7 +9,7 @@ namespace EtaEstimator
     using Stats;
     using Utils;
 
-    public sealed class EtaEstimator
+    public sealed class ETAEstimator
     {
         private readonly double outlierCut;
         private readonly double noiseBlend;
@@ -35,7 +35,7 @@ namespace EtaEstimator
         public double Done => done;
         public double Percent => Math.Min(100.0, 100.0 * done / total);
 
-        public EtaEstimator(double totalUnits,
+        public ETAEstimator(double totalUnits,
                             double outlierCut = 3.0,
                             double noiseBlend = 0.15,
                             double driftFactor = 0.02,

@@ -10,7 +10,7 @@ namespace EtaEstimator.WpfDemo.ViewModels
 
     public class MainViewModel : INotifyPropertyChanged
     {
-        private EtaEstimator? _estimator;
+        private ETAEstimator? _estimator;
         private readonly DispatcherTimer _autoTimer;
         private readonly Random _rng = new(42);
 
@@ -61,26 +61,30 @@ namespace EtaEstimator.WpfDemo.ViewModels
 
         private void Create()
         {
-            _estimator = new EtaEstimator(TotalUnits);
+            _estimator = new ETAEstimator(TotalUnits);
             RaiseAllOutputs();
         }
 
         private async Task DoStepAsync()
         {
-            if (_estimator == null) return;
+            var est = _estimator;
+            if (est == null) return;
 
             int delay = UseRandomDelay ? _rng.Next(80, 350) : FixedDelayMs;
             await Task.Delay(delay);
 
-            _estimator.Step(UnitsPerStep);
+            if (est != _estimator) return;
+
+            est.Step(UnitsPerStep);
             RaiseAllOutputs();
 
-            if (_estimator.Done >= _estimator.Total)
+            if (est.Done >= est.Total)
             {
                 _autoTimer.Stop();
                 AutoButtonText = "Auto ▶";
             }
         }
+
 
         private void ToggleAuto()
         {
