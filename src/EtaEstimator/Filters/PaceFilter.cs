@@ -2,17 +2,15 @@
 
 namespace EtaEstimator.Filters
 {
-
-    // Glättet „Sekunden pro Einheit“ (Kalman-like, aber mit eigenen Namen)
     internal sealed class PaceFilter
     {
         public bool HasValue => _m is not null;
         public double Value => _m!.Value;
         public double Var => _p!.Value;
 
-        private double? _m;  // Zustand
-        private double? _p;  // Varianz
-        private double? _r;  // Messrauschen
+        private double? _m;
+        private double? _p; 
+        private double? _r;
 
         public void Update(double z, double driftFactor, double noiseBlend)
         {

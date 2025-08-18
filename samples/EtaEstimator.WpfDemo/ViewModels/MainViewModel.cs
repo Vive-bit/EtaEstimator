@@ -42,10 +42,13 @@ namespace EtaEstimator.WpfDemo.ViewModels
         public string DoneTotal => _estimator == null ? "" : $"{_estimator.Done:0}/{_estimator.Total:0}";
         public string ProgressText => _estimator == null ? "" : $"{_estimator.Percent:0.0}%";
         public double ProgressPercent => _estimator?.Percent ?? 0.0;
-        public string EtaFormatted => _estimator == null ? "" :
-            (double.IsInfinity(_estimator.GetEtaSeconds()) ? "∞" : TimeSpan.FromSeconds(_estimator.GetEtaSeconds()).ToString(@"mm\:ss"));
-        public string EtaSeconds => _estimator == null ? "" :
-            (double.IsInfinity(_estimator.GetEtaSeconds()) ? "∞" : _estimator.GetEtaSeconds().ToString("0.000"));
+        private string _etaFormatted = "";
+        public string EtaFormatted { get => _etaFormatted; private set { _etaFormatted = value; OnPropertyChanged(); } }
+
+        private string _etaSeconds = "";
+        public string EtaSeconds { get => _etaSeconds; private set { _etaSeconds = value; OnPropertyChanged(); } }
+
+
 
         private string _autoButtonText = "Auto ▶";
         public string AutoButtonText { get => _autoButtonText; set { _autoButtonText = value; OnPropertyChanged(); } }
@@ -103,7 +106,7 @@ namespace EtaEstimator.WpfDemo.ViewModels
         private void Reset()
         {
             _autoTimer.Stop();
-            _estimator = null;
+            _estimator = new ETAEstimator(TotalUnits);
             AutoButtonText = "Auto ▶";
             RaiseAllOutputs();
         }
@@ -113,8 +116,19 @@ namespace EtaEstimator.WpfDemo.ViewModels
             OnPropertyChanged(nameof(DoneTotal));
             OnPropertyChanged(nameof(ProgressText));
             OnPropertyChanged(nameof(ProgressPercent));
-            OnPropertyChanged(nameof(EtaFormatted));
-            OnPropertyChanged(nameof(EtaSeconds));
+
+            if (_estimator is null)
+            {
+                EtaFormatted = "";
+                EtaSeconds = "";
+                return;
+            }
+
+            var etaStable = _estimator.GetEtaSeconds(stable: true);
+            var etaRaw = _estimator.GetEtaSeconds(stable: false);
+
+            EtaFormatted = double.IsInfinity(etaStable) ? "∞" : TimeSpan.FromSeconds(etaStable).ToString(@"mm\:ss");
+            EtaSeconds = double.IsInfinity(etaRaw) ? "∞" : Math.Round(etaRaw).ToString("0");
         }
 
         #region INotifyPropertyChanged

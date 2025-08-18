@@ -2,7 +2,6 @@
 
 namespace EtaEstimator.Stats
 {
-    // Welford online: Mittel/Varianz von sek/Einheit
     internal sealed class StepStats
     {
         public int Count { get; private set; }

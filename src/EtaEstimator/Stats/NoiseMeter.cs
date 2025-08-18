@@ -2,7 +2,7 @@
 
 namespace EtaEstimator.Stats
 {
-    // robuste Sigma-Schätzung via EMAs von |r| und r^2
+    // Sigma-Prob. via EMAs of |r| and r^2
     internal sealed class NoiseMeter
     {
         private double? absAvg, sqAvg;

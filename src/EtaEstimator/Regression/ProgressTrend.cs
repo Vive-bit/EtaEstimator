@@ -2,14 +2,14 @@
 
 namespace EtaEstimator.Regression
 {
-    // RLS: elapsed ≈ A + B·done
+    // RLS: elapsed ~~ A + B·done
     internal sealed class ProgressTrend
     {
         public double A { get; private set; } = 0.0;
         public double B { get; private set; } = 1.0;
 
-        private double P00 = 1e6, P01 = 0.0, P10 = 0.0, P11 = 1e6; // Kovarianz
-        public double? ResVar { get; private set; } // EWMA der Residuen
+        private double P00 = 1e6, P01 = 0.0, P10 = 0.0, P11 = 1e6;
+        public double? ResVar { get; private set; }
         private readonly double lambda;
 
         public ProgressTrend(double lambda) => this.lambda = lambda;
@@ -38,7 +38,6 @@ namespace EtaEstimator.Regression
             P10 = (P10 - gP10) / lambda;
             P11 = (P11 - gP11) / lambda;
 
-            // Symmetrie leicht nachziehen
             double p01 = 0.5 * (P01 + P10);
             P01 = P10 = p01;
 
