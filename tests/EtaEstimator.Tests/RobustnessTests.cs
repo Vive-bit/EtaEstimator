@@ -14,7 +14,7 @@ namespace EtaEstimator.Tests
         {
             var est = new EtaEstimator(totalUnits: 30, outlierCut: 3.0);
 
-            // 20 Items stabil @ 20ms
+            // 20 Items @ 20ms
             for (int i = 0; i < 20; i++)
             {
                 await Task.Delay(20);
@@ -23,11 +23,11 @@ namespace EtaEstimator.Tests
 
             var etaBefore = est.GetEtaSeconds();
 
-            // Ausreißer: eine lange Wartezeit
+            // wait
             await Task.Delay(400);
             est.Step(1);
 
-            // Danach wieder normal
+            // then normal again
             for (int i = 0; i < 3; i++)
             {
                 await Task.Delay(20);
@@ -36,9 +36,9 @@ namespace EtaEstimator.Tests
 
             var etaAfter = est.GetEtaSeconds();
 
-            // Erwartung: kein massiver Sprung; ETA darf ansteigen, aber begrenzt.
+            // Except: no massive jump; ETA can rise, but not too high.
             etaAfter.Should().BeGreaterThan(0);
-            // nicht mehr als Faktor 3 gegenüber vorher (großzügig)
+            // not more than *3 in comparison to before
             (etaAfter <= etaBefore * 3.0 + 0.5).Should().BeTrue(
                 $"etaAfter={etaAfter} should not blow up from etaBefore={etaBefore}");
         }
@@ -46,10 +46,10 @@ namespace EtaEstimator.Tests
         [Fact]
         public async Task AverageCandidate_KicksIn_When_PaceMissing()
         {
-            // sehr kleines total, der Filter kann am Anfang noch nicht viel lernen
+            // very thin total, cant learn too much
             var est = new EtaEstimator(totalUnits: 4);
 
-            // zwei stabile Schritte
+            // 2 @ 30ms
             for (int i = 0; i < 2; i++)
             {
                 await Task.Delay(30);
@@ -57,7 +57,7 @@ namespace EtaEstimator.Tests
             }
 
             var eta = est.GetEtaSeconds();
-            // Erwartung ~ 2 * 0.03 = 0.06s
+            // Expect ~ 2 * 0.03 = 0.06s
             AssertEx.Approximately(eta, expected: 0.06, relTol: 0.6, absTol: 0.06);
         }
     }
