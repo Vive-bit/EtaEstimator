@@ -2,7 +2,7 @@
 
 namespace EtaEstimator.Regression
 {
-    // RLS: elapsed ~~ A + B·done
+    // RLS: elapsed ~~ A + B x done
     internal sealed class ProgressTrend
     {
         public double A { get; private set; } = 0.0;
