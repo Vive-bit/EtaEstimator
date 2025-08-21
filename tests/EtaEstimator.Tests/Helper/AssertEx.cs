@@ -6,7 +6,7 @@ namespace EtaEstimator.Tests.Helper
     {
         public static void Approximately(double actual, double expected, double relTol = 0.25, double absTol = 0.25)
         {
-            // besteht, wenn |a-e| <= max(absTol, relTol*|e|)
+            // is, if |a-e| <= max(absTol, relTol*|e|)
             var diff = Math.Abs(actual - expected);
             var tol = Math.Max(absTol, Math.Abs(expected) * relTol);
             if (diff > tol)
