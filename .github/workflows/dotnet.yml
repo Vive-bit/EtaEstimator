@@ -27,7 +27,7 @@ jobs:
       run: dotnet build src/EtaEstimator/EtaEstimator.csproj --configuration Release --no-restore
 
     - name: Test
-      run: dotnet test src/EtaEstimator.sln --configuration Release --no-build --verbosity normal
+      run: dotnet test EtaEstimator.sln --configuration Release --no-build --verbosity normal
 
     - name: Pack NuGet
       run: dotnet pack src/EtaEstimator/EtaEstimator.csproj --configuration Release -o ./artifacts
