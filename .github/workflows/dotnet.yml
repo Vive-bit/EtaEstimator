@@ -1,7 +1,4 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
-name: .NET
+name: .NET Build & Test
 
 on:
   push:
@@ -15,14 +12,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.0.x
+
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore EtaEstimator/src/EtaEstimator/EtaEstimator.csproj
+
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build EtaEstimator/src/EtaEstimator/EtaEstimator.csproj --configuration Release --no-restore
+
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test EtaEstimator/src/EtaEstimator.sln --configuration Release --no-build --verbosity normal
