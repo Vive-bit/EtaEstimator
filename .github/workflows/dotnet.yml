@@ -1,4 +1,4 @@
-name: .NET Build & Test
+name: .NET Build, Test & Pack
 
 on:
   push:
@@ -21,10 +21,19 @@ jobs:
         dotnet-version: 9.0.x
 
     - name: Restore dependencies
-      run: dotnet restore EtaEstimator/src/EtaEstimator/EtaEstimator.csproj
+      run: dotnet restore src/EtaEstimator/EtaEstimator.csproj
 
     - name: Build
-      run: dotnet build EtaEstimator/src/EtaEstimator/EtaEstimator.csproj --configuration Release --no-restore
+      run: dotnet build src/EtaEstimator/EtaEstimator.csproj --configuration Release --no-restore
 
     - name: Test
-      run: dotnet test EtaEstimator/src/EtaEstimator.sln --configuration Release --no-build --verbosity normal
+      run: dotnet test src/EtaEstimator.sln --configuration Release --no-build --verbosity normal
+
+    - name: Pack NuGet
+      run: dotnet pack src/EtaEstimator/EtaEstimator.csproj --configuration Release -o ./artifacts
+
+    - name: Upload package artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: EtaEstimator-nuget
+        path: ./artifacts/*.nupkg
