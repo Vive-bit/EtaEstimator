@@ -10,7 +10,7 @@ namespace EtaEstimator.Tests.Helper
             var diff = Math.Abs(actual - expected);
             var tol = Math.Max(absTol, Math.Abs(expected) * relTol);
             if (diff > tol)
-                throw new Xunit.Sdk.XunitException($"Expected ≈ {expected} (±{tol}), got {actual}");
+                throw new Xunit.Sdk.XunitException($"Expected ~~ {expected} (±{tol}), got {actual}");
         }
     }
 }
