@@ -22,14 +22,14 @@ namespace EtaEstimator.Tests
         {
             var est = new EtaEstimator(totalUnits: 20);
 
-            // Simuliere konstante 50ms pro Item
+            // const 50ms
             for (int i = 0; i < 10; i++)
             {
                 await Task.Delay(50);
                 est.Step(1);
             }
 
-            // noch 10 Einheiten offen, erwartete ETA ~ 10 * 0.05 = 0.5s
+            // 10 left, expect ETA ~ 10 * 0.05 = 0.5s
             var etaNow = est.GetEtaSeconds();
             AssertEx.Approximately(etaNow, expected: 0.5, relTol: 0.40, absTol: 0.35);
         }
