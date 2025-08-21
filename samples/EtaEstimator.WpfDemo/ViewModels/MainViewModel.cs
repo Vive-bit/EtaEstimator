@@ -39,7 +39,7 @@ namespace EtaEstimator.WpfDemo.ViewModels
         private int _fixedDelayMs = 120;
         public int FixedDelayMs { get => _fixedDelayMs; set { _fixedDelayMs = value; OnPropertyChanged(); } }
 
-        public string DoneTotal => _estimator == null ? "" : $"{_estimator.Done:0}/{_estimator.Total:0}";
+        public string DoneTotal => _estimator == null ? "" : $"{_estimator.Done:0}/{_estimator.Total:0} Units";
         public string ProgressText => _estimator == null ? "" : $"{_estimator.Percent:0.0}%";
         public double ProgressPercent => _estimator?.Percent ?? 0.0;
         private string _etaFormatted = "";
