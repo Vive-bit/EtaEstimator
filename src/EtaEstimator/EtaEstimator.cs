@@ -25,9 +25,8 @@ namespace EtaEstimator
         double MaxLagAtEnd = 1.5,
         double LagSlopeSqrt = 0.75,
         double NearEndSnapSec = 8.0,
-        // Neu: robustere Pace + Regime-Shift
-        double QuantileP = 0.70,      // p60–p80 ist i. d. R. gut
-        double RegimeAlpha = 0.10,    // Rolling-Mean/MAD Smoothing
+        double QuantileP = 0.70, // p60–p80 ist i. d. R. gut
+        double RegimeAlpha = 0.10, // Rolling-Mean/MAD Smoothing
         double RegimeThreshold = 4.0, // Shift, wenn |x-mean| > k * MAD
         int RegimeWarmupSteps = 8  // Steps aggressiver lernen
     );
@@ -45,7 +44,6 @@ namespace EtaEstimator
         double SecPerUnitEma,
         double SecPerUnitFiltered);
 
-    // --- O(1) P^2-Quantilschätzer (Jain/Chlamtac) ---
     internal sealed class P2Quantile
     {
         private readonly double p;
@@ -143,7 +141,7 @@ namespace EtaEstimator
         private readonly PaceFilter _pace = new();
         private readonly ProgressTrend _trend;
 
-        private readonly P2Quantile _qSpu; // Pace-Quantil
+        private readonly P2Quantile _qSpu;
 
         private double _total;
         private double _done;
@@ -160,7 +158,6 @@ namespace EtaEstimator
         private double _lastDecreaseSec = double.NaN;
         private DateTime _lastProgress = DateTime.UtcNow;
 
-        // Regime-Shift Heuristik (Rolling-Mean/MAD, exponentiell)
         private double _winMean = double.NaN, _winMad = double.NaN;
         private int _winN = 0;
         private int _warmupOverride = 0;
@@ -309,7 +306,7 @@ namespace EtaEstimator
                     Acc(eta, var, ref num, ref den);
                 }
 
-                // EMA (ruhig)
+                // EMA
                 if (_emaSpu > 0)
                 {
                     double eta = left * _emaSpu;
@@ -317,7 +314,7 @@ namespace EtaEstimator
                     Acc(eta, var, ref num, ref den);
                 }
 
-                // Quantil-Pace (robust gegen Ausreißer)
+                // Quantil-Pace
                 double qv = _qSpu.Value;
                 if (!double.IsNaN(qv) && qv > 0)
                 {
