@@ -1,9 +1,33 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>EtaEstimator</RootNamespace>
   </PropertyGroup>
+
+  <!-- NuGet package metadata -->
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>EtaEstimator</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Martin Lechner</Authors>
+    <Company>Martin Lechner</Company>
+    <Copyright>Copyright (c) Martin Lechner</Copyright>
+    <Description>Smoothed ETA predictor — combines EMA, Welford variance, RLS trend regression, P² quantile estimation and pace filtering with display stabilisation (capped drops, grace periods, regime-shift detection, snap-to-zero). Built for long-running operations with fluctuating per-step runtime where a stable "remaining seconds" estimate is more useful than a raw percentage.</Description>
+    <PackageTags>eta;progress;estimator;regression;ema;welford;p-square;quantile;wpf;dotnet</PackageTags>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)..\..\dist</PackageOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
 </Project>
